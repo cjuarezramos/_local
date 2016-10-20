@@ -63,39 +63,49 @@ global hazard_data entity_data EDS_data climada_global
 % yp=round(yr/2);
 % set(gcf,'Position',[xp yp pos_act(3) pos_act(4)]);
 
-axes(handles.axes1)
-% a=imread('prueba_imagen.png');
-% set(handles.axes2,'Visible','off')
-% image(a,'Parent',handles.axes1)
-set(handles.axes1,'Visible','off')
+background = imread('Solmaforo.jpg'); %Leer imagen
+axes(handles.background); %Carga la imagen en background
+axis off;
+imshow(background); %Presenta la imagen
+handles.output = hObject;
+
+
+% a=imread('Solmaforo.jpg');
+% % set(handles.axes2,'Visible','off')
+% image(a);
+% % handles.imagen=a; 
+% % imagesc(handles.imagen) 
+% axis off
+% axes(handles.axes1)
+% set(handles.axes1,'Visible','off')
 
 direc=cd;
-direc=direc(1:end-27);
-run([direc 'climada\startup.m'])
-
-% % Lecturas de hazard actual
-% hazard_data.actual_2015=climada_hazard_load('Salvador_hazard_FL_2015');
-% 
-% % hazard moderado
-% hazard_data.moderado_2040=climada_hazard_load('Salvador_hazard_FL_2040_moderate_cc');
-% hazard_data.moderado_2050=climada_hazard_load('Salvador_hazard_FL_2050_moderate_cc');
-% 
-% %hazard extremo
-% hazard_data.extremo_2040=climada_hazard_load('Salvador_hazard_FL_2040_extreme_cc');
-% hazard_data.extremo_2050=climada_hazard_load('Salvador_hazard_FL_2050_extreme_cc');
-
+direc=direc(1:end-20);
+run([direc '\startup.m'])
 
 % Lecturas de hazard actual
-hazard_data.actual_2015=climada_hazard_load('Salvador_hazard_FL_2016_today_rd');
+hazard_data.actual_2015=climada_hazard_load('Salvador_hazard_FL_2015');
 
 % hazard moderado
-hazard_data.moderado_2040=climada_hazard_load('Salvador_hazard_FL_2040_moderate_rd');
-hazard_data.moderado_2050=climada_hazard_load('Salvador_hazard_FL_2050_moderate_rd');
+hazard_data.moderado_2040=climada_hazard_load('Salvador_hazard_FL_2040_moderate_cc');
+hazard_data.moderado_2050=climada_hazard_load('Salvador_hazard_FL_2050_moderate_cc');
 
 %hazard extremo
-hazard_data.extremo_2040=climada_hazard_load('Salvador_hazard_FL_2040_extreme_rd');
-hazard_data.extremo_2050=climada_hazard_load('Salvador_hazard_FL_2050_extreme_rd');
+hazard_data.extremo_2040=climada_hazard_load('Salvador_hazard_FL_2040_extreme_cc');
+hazard_data.extremo_2050=climada_hazard_load('Salvador_hazard_FL_2050_extreme_cc');
 
+
+% % Lecturas de hazard actual
+% hazard_data.actual_2015=climada_hazard_load('Salvador_hazard_FL_2016_today_rd');
+%
+% % hazard moderado
+% hazard_data.moderado_2040=climada_hazard_load('Salvador_hazard_FL_2040_moderate_rd');
+% hazard_data.moderado_2050=climada_hazard_load('Salvador_hazard_FL_2050_moderate_rd');
+%
+% %hazard extremo
+% hazard_data.extremo_2040=climada_hazard_load('Salvador_hazard_FL_2040_extreme_rd');
+% hazard_data.extremo_2050=climada_hazard_load('Salvador_hazard_FL_2050_extreme_rd');
+%
 
 
 % Entity
@@ -169,12 +179,12 @@ set(handles.results,'columnname',{'Valores $'})
 
 % por tipo
 set(handles.results_cat, 'rowname',{...
-'1	Housing AUPs'
-'2	Housing'
-'3	Hospitals'
-'4	Schools'
-'5	Roads'
-'6	Buildings'})
+    '1	Housing AUPs'
+    '2	Housing'
+    '3	Hospitals'
+    '4	Schools'
+    '5	Roads'
+    '6	Buildings'})
 
 % set(handles.results_cat, 'rowname', { 'Daño Esperado AUP','Daño Esperado Casas','Daño Esperado Edficios','Daño Esperado Escuelas'})
 set(handles.results_cat,'columnname',{'Construcción' 'Bienes' 'Reconstrucción'})
@@ -271,8 +281,9 @@ Data_ref.hazard=hazard;
 Data_ref.entity=entity;
 Data_ref.EDS=EDS;
 % Data=xlsread('viviendas01');
-Lon=entity.pre_bie.assets.lon;
-Lat=entity.pre_bie.assets.lat;
+Lon=Data_ref.entity.pre_bie.assets.lon;
+Lat=Data_ref.entity.pre_bie.assets.lat;
+Cat=Data_ref.entity.pre_bie.assets.Category;
 LonmaxE=max(Lon);
 LonminE=min(Lon);
 LatmaxE=max(Lat);
@@ -285,6 +296,7 @@ LatminE=min(Lat);
 LonG=hazard.lon;
 LatG=hazard.lat;
 IntentG=hazard.intensity;
+
 
 
 %------------ Graficación de Eventos----------------
@@ -329,8 +341,34 @@ set(handles.axes2,'color','none')
 contourf(LonG_X,LatG_Y,Z,'edgecolor','none')
 c=colorbar;
 colormap(cmap)
+
+
+% Ploteo de los puntos de interés
 hold on
-plot(Lon,Lat,'.')
+% AUP Housing
+[a,b]=find(Cat==1);
+plot(Lon(b),Lat(b),'.r')
+% Housing
+[a,b]=find(Cat==2)
+plot(Lon(b),Lat(b),'.b')
+
+% Hospitals
+[a,b]=find(Cat==3)
+plot(Lon(b),Lat(b),'.y')
+
+% Escuelas
+[a,b]=find(Cat==4)
+plot(Lon(b),Lat(b),'.g')
+
+% Carteras
+[a,b]=find(Cat==5)
+plot(Lon(b),Lat(b),'.c')
+
+% Edificioes
+[a,b]=find(Cat==6)
+plot(Lon(b),Lat(b),'.p')
+legend('','AUP','Casas','Hospitales','Escuelas','Carreteras','Edificios')
+
 set(handles.axes2,'color','white')
 hold off;
 title(['Intensidad (m) - Evento ' num2str(Evento)])
@@ -344,11 +382,13 @@ title(['Intensidad (m) - Evento ' num2str(Evento)])
 % '6	Buildings'
 
 
-set(handles.results, 'data', {num2str(EDS.pre_con.ED); num2str(EDS.pre_bie.ED); num2str(EDS.pre_rec.ED);...
-    num2str(EDS.pre_con.Value);num2str(EDS.pre_bie.Value);num2str(EDS.pre_rec.Value)})
+set(handles.results, 'data', {num2str(EDS.pre_con.ED,'% 12.2f'); num2str(EDS.pre_bie.ED,'% 12.2f'); num2str(EDS.pre_rec.ED,'% 12.2f');...
+    num2str(EDS.pre_con.Value,'%#12.2f');num2str(EDS.pre_bie.Value,'% 12.2f');num2str(EDS.pre_rec.Value,'%12.2f')})
+
+
 
 idx_1= entity.pre_con.assets.Category==1;
-ED_cat{1,1}=sum(EDS.pre_con.ED_at_centroid(idx_1));
+ED_cat{1,1}=num2str(sum(EDS.pre_con.ED_at_centroid(idx_1)),'%#12.2f');
 ED_cat{1,2}=sum(EDS.pre_bie.ED_at_centroid(idx_1));
 ED_cat{1,3}=sum(EDS.pre_rec.ED_at_centroid(idx_1));
 idx_2= entity.pre_con.assets.Category==2;
@@ -424,13 +464,13 @@ if ~isempty(info)
         set(handles.info_pts, 'data', info_p)
     else
         idx= Lon==Lon_pt&Lat==Lat_pt;
-cat=char('1	Housing AUPs',...
-'2	Housing',...
-'3	Hospitals',...
-'4	Schools',...
-'5	Roads',...
-'6	Buildings');
-info_p(1,1)={cat(Data_ref.EDS.pre_con.assets.Category(idx),:)};
+        cat=char('1	Housing AUPs',...
+            '2	Housing',...
+            '3	Hospitals',...
+            '4	Schools',...
+            '5	Roads',...
+            '6	Buildings');
+        info_p(1,1)={cat(Data_ref.EDS.pre_con.assets.Category(idx),:)};
         info_p(2,1)={Z_punto(idx)};
         info_p(3,1)={Data_ref.EDS.pre_con.ED_at_centroid(idx)};
         info_p(4,1)={Data_ref.EDS.pre_bie.ED_at_centroid(idx)};
@@ -440,11 +480,11 @@ info_p(1,1)={cat(Data_ref.EDS.pre_con.assets.Category(idx),:)};
         info_p(8,1)={Data_ref.EDS.pre_rec.assets.Value(idx)};
         
         set(handles.info_pts, 'data', info_p)
-%         inten=(Data(idx,18));
-%         set(handles.intensidad,'string',num2str(inten));
-%         set(handles.pre_con_p,'string',num2str(Data(idx,15)));
-%         set(handles.pre_rec_p,'string',num2str(Data(idx,16)));
-%         set(handles.pre_bie_p,'string',num2str(Data(idx,17)));
+        %         inten=(Data(idx,18));
+        %         set(handles.intensidad,'string',num2str(inten));
+        %         set(handles.pre_con_p,'string',num2str(Data(idx,15)));
+        %         set(handles.pre_rec_p,'string',num2str(Data(idx,16)));
+        %         set(handles.pre_bie_p,'string',num2str(Data(idx,17)));
     end
 end
 
