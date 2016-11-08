@@ -63,11 +63,11 @@ global hazard_data entity_data EDS_data climada_global
 % yp=round(yr/2);
 % set(gcf,'Position',[xp yp pos_act(3) pos_act(4)]);
 
-background = imread('Solmaforo.jpg'); %Leer imagen
-axes(handles.background); %Carga la imagen en background
-axis off;
-imshow(background); %Presenta la imagen
-handles.output = hObject;
+% background = imread('Solmaforo.jpg'); %Leer imagen
+% axes(handles.background); %Carga la imagen en background
+% axis off;
+% imshow(background); %Presenta la imagen
+% handles.output = hObject;
 
 
 % a=imread('Solmaforo.jpg');
@@ -75,7 +75,7 @@ handles.output = hObject;
 % image(a);
 % % handles.imagen=a; 
 % % imagesc(handles.imagen) 
-% axis off
+axis off
 % axes(handles.axes1)
 % set(handles.axes1,'Visible','off')
 
