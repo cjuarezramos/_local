@@ -1,15 +1,15 @@
 global_ilohuapa
 
 % Lecturas de hazard actual
-hazard_data.actual_2015=climada_hazard_load('Salvador_hazard_FL_2015');
+hazard_data.actual_2015=climada_hazard_load('Salvador_hazard_FL_2016_today_mdf');
 
 % hazard moderado
-hazard_data.moderado_2040=climada_hazard_load('Salvador_hazard_FL_2040_moderate_cc');
-hazard_data.moderado_2050=climada_hazard_load('Salvador_hazard_FL_2050_moderate_cc');
+hazard_data.moderado_2040=climada_hazard_load('Salvador_hazard_FL_2040_moderate_mdf');
+hazard_data.moderado_2050=climada_hazard_load('Salvador_hazard_FL_2050_moderate_mdf');
 
 %hazard extremo
-hazard_data.extremo_2040=climada_hazard_load('Salvador_hazard_FL_2040_extreme_cc');
-hazard_data.extremo_2050=climada_hazard_load('Salvador_hazard_FL_2050_extreme_cc');
+hazard_data.extremo_2040=climada_hazard_load('Salvador_hazard_FL_2040_extreme_mdf');
+hazard_data.extremo_2050=climada_hazard_load('Salvador_hazard_FL_2050_extreme_mdf');
 
 
 % % Lecturas de hazard actual
@@ -24,6 +24,18 @@ hazard_data.extremo_2050=climada_hazard_load('Salvador_hazard_FL_2050_extreme_cc
 % hazard_data.extremo_2050=climada_hazard_load('Salvador_hazard_FL_2050_extreme_rd');
 %
 
+% % ORIGINALES SOLO INTENSIDADES MODIFICADOS
+% % Lecturas de hazard actual
+% hazard_data.actual_2015=climada_hazard_load('Salvador_hazard_FL_2015_today');
+% 
+% % hazard moderado
+% hazard_data.moderado_2040=climada_hazard_load('Salvador_hazard_FL_2040_moderate_cc');
+% hazard_data.moderado_2050=climada_hazard_load('Salvador_hazard_FL_2050_moderate_cc');
+% 
+% %hazard extremo
+% hazard_data.extremo_2040=climada_hazard_load('Salvador_hazard_FL_2040_extreme_cc');
+% hazard_data.extremo_2050=climada_hazard_load('Salvador_hazard_FL_2050_extreme_cc');
+% %
 
 % Entity
 entity_data.actual_2015.pre_con=climada_entity_read('FL_entity_Ilohuapa_prec_con_to.xlsx',hazard_data.actual_2015);
@@ -98,7 +110,7 @@ set(handles.results,'columnname',{'Valores $'})
 set(handles.results_cat, 'rowname',{...
     'Viviendas AUP'
     'Viviendas '
-    'Zoológico'
+    'Edificacions Especiales'
     'Escuelas'
 %     '5	Roads'
 %     '6	Buildings'
@@ -109,6 +121,6 @@ set(handles.results_cat,'columnname',{'Construcción' 'Bienes' 'Reconstrucción'})
 
 % Nombre de filas y comunas de los puntos específicos
 set(handles.info_pts, 'rowname', {'Categoría','Inundaciones (m)','Daño Esperado (con)',...
-    'Daño Esperado (bie)','Daño Esperado (con)','Precio Construccion Total',...
+    'Daño Esperado (bie)','Daño Esperado (recn)','Precio Construccion Total',...
     'Precio Bienes Total','Precio Recontruccion Total'})
 set(handles.info_pts,'columnname',{'Valores'})

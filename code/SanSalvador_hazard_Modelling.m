@@ -46,7 +46,7 @@ hazard.intensity=hazard.intensity*(1+porcentaje_correccion);
 fprintf('saving %s\n',hazard_2016_file);
 save(hazard_2016_file,'hazard');
 
-2
+
 % -------------------------
 hazard_actual=climada_hazard_load('Salvador_hazard_FL_2016_today_rd');
 
