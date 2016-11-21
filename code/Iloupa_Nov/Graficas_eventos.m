@@ -22,7 +22,7 @@ function varargout = Graficas_eventos(varargin)
 
 % Edit the above text to modify the response to help Graficas_eventos
 
-% Last Modified by GUIDE v2.5 19-Sep-2016 19:30:34
+% Last Modified by GUIDE v2.5 15-Nov-2016 12:16:34
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -54,7 +54,7 @@ function Graficas_eventos_OpeningFcn(hObject, eventdata, handles, varargin)
 % varargin   command line arguments to Graficas_eventos (see VARARGIN)
 inicializacion_gui
 
-ilohuapa_info_run
+ilohuapa_info_run(0,handles)
 handles.output = hObject;
 
 
@@ -115,9 +115,9 @@ escenario=get(handles.escenarios,'Value');
 switch escenario
     case 1
         % hazard actual
-        hazard=hazard_data.actual_2015;
-        entity=entity_data.actual_2015;
-        EDS=EDS_data.actual_2015;
+        hazard=hazard_data.actual_2016;
+        entity=entity_data.actual_2016;
+        EDS=EDS_data.actual_2016;
     case 2
         % hazard moderado
         hazard=hazard_data.moderado_2040;
@@ -196,12 +196,16 @@ for i=1:3
     cmap2(:,i)= middlecolor2(i):(endcolor(i)-middlecolor2(i))/(ceil(steps10/2)-1):endcolor(i);
 end
 cmap = [1.0 1.0 1.0; cmap1; cmap2];
-set(handles.axes2,'color','none')
 
-contourf(LonG_X,LatG_Y,Z,'edgecolor','none')
-c=colorbar;
+set(handles.axes2,'color','none')
+contourf(LonG_X,LatG_Y,Z,'edgecolor','none');
+xlabel('Longitud');
+ylabel('Latitud');
+c = colorbar;
 colormap(cmap)
 
+               % Make the colorbar the current axes
+ylabel(c,'Profundidad (m)')    % set the title of the colorbar;
 
 % Ploteo de los puntos de interés
 hold on
@@ -210,15 +214,15 @@ hold on
 plot(Lon(b),Lat(b),'.r')
 % Housing
 [a,b]=find(Cat==2);
-plot(Lon(b),Lat(b),'.b')
+plot(Lon(b),Lat(b),'xm')
 
 % Hospitals
 [a,b]=find(Cat==3);
-plot(Lon(b),Lat(b),'.y')
+plot(Lon(b),Lat(b),'*k')
 
 % Escuelas
 [a,b]=find(Cat==4);
-plot(Lon(b),Lat(b),'.g')
+plot(Lon(b),Lat(b),'*b')
 
 % Carteras
 [a,b]=find(Cat==5);
@@ -232,7 +236,7 @@ legend('','Viviendas AUP','Viviendas','Edificacions Especiales','Escuelas','Loca
 
 set(handles.axes2,'color','white')
 hold off;
-title(['Intensidad (m) - Evento ' num2str(Evento)])
+title(['Inundación - Evento ' num2str(Evento)])
 
 
 % '1	Housing AUPs'
@@ -249,29 +253,29 @@ set(handles.results, 'data', {num2str(EDS.pre_con.ED,'% 12.2f'); num2str(EDS.pre
 
 
 idx_1= entity.pre_con.assets.Category==1;
-ED_cat{1,1}=num2str(sum(EDS.pre_con.ED_at_centroid(idx_1)),'%#12.2f');
-ED_cat{1,2}=sum(EDS.pre_bie.ED_at_centroid(idx_1));
-ED_cat{1,3}=sum(EDS.pre_rec.ED_at_centroid(idx_1));
+ED_cat{1,1}=num2str(sum(EDS.pre_con.ED_at_centroid(idx_1)),'%12.2f');
+ED_cat{1,2}=num2str(sum(EDS.pre_bie.ED_at_centroid(idx_1)),'%12.2f');
+ED_cat{1,3}=num2str(sum(EDS.pre_rec.ED_at_centroid(idx_1)),'%12.2f');
 idx_2= entity.pre_con.assets.Category==2;
-ED_cat{2,1}=sum(EDS.pre_con.ED_at_centroid(idx_2));
-ED_cat{2,2}=sum(EDS.pre_bie.ED_at_centroid(idx_2));
-ED_cat{2,3}=sum(EDS.pre_rec.ED_at_centroid(idx_2));
+ED_cat{2,1}=num2str(sum(EDS.pre_con.ED_at_centroid(idx_2)),'%12.2f');
+ED_cat{2,2}=num2str(sum(EDS.pre_bie.ED_at_centroid(idx_2)),'%12.2f');
+ED_cat{2,3}=num2str(sum(EDS.pre_rec.ED_at_centroid(idx_2)),'%12.2f');
 idx_3= entity.pre_con.assets.Category==3;
-ED_cat{3,1}=sum(EDS.pre_con.ED_at_centroid(idx_3));
-ED_cat{3,2}=sum(EDS.pre_bie.ED_at_centroid(idx_3));
-ED_cat{3,3}=sum(EDS.pre_rec.ED_at_centroid(idx_3));
+ED_cat{3,1}=num2str(sum(EDS.pre_con.ED_at_centroid(idx_3)),'%12.2f');
+ED_cat{3,2}=num2str(sum(EDS.pre_bie.ED_at_centroid(idx_3)),'%12.2f');
+ED_cat{3,3}=num2str(sum(EDS.pre_rec.ED_at_centroid(idx_3)),'%12.2f');
 idx_4= entity.pre_con.assets.Category==4;
-ED_cat{4,1}=sum(EDS.pre_con.ED_at_centroid(idx_4));
-ED_cat{4,2}=sum(EDS.pre_bie.ED_at_centroid(idx_3));
-ED_cat{4,3}=sum(EDS.pre_rec.ED_at_centroid(idx_3));
+ED_cat{4,1}=num2str(sum(EDS.pre_con.ED_at_centroid(idx_4)),'%12.2f');
+ED_cat{4,2}=num2str(sum(EDS.pre_bie.ED_at_centroid(idx_4)),'%12.2f');
+ED_cat{4,3}=num2str(sum(EDS.pre_rec.ED_at_centroid(idx_4)),'%12.2f');
 idx_5= entity.pre_con.assets.Category==5;
-ED_cat{5,1}=sum(EDS.pre_con.ED_at_centroid(idx_5));
-ED_cat{5,2}=sum(EDS.pre_bie.ED_at_centroid(idx_5));
-ED_cat{5,3}=sum(EDS.pre_rec.ED_at_centroid(idx_5));
+ED_cat{5,1}=num2str(sum(EDS.pre_con.ED_at_centroid(idx_5)),'%12.2f');
+ED_cat{5,2}=num2str(sum(EDS.pre_bie.ED_at_centroid(idx_5)),'%12.2f');
+ED_cat{5,3}=num2str(sum(EDS.pre_rec.ED_at_centroid(idx_5)),'%12.2f');
 idx_6= entity.pre_con.assets.Category==6;
-ED_cat{6,1}=sum(EDS.pre_con.ED_at_centroid(idx_6));
-ED_cat{6,2}=sum(EDS.pre_bie.ED_at_centroid(idx_6));
-ED_cat{6,3}=sum(EDS.pre_rec.ED_at_centroid(idx_6));
+ED_cat{6,1}=num2str(sum(EDS.pre_con.ED_at_centroid(idx_6)),'%12.2f');
+ED_cat{6,2}=num2str(sum(EDS.pre_bie.ED_at_centroid(idx_6)),'%12.2f');
+ED_cat{6,3}=num2str(sum(EDS.pre_rec.ED_at_centroid(idx_6)),'%12.2f');
 
 
 set(handles.results_cat, 'data', ED_cat)
@@ -371,3 +375,12 @@ function select_evento_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --- Executes on button press in Calcular.
+function Calcular_Callback(hObject, eventdata, handles)
+% hObject    handle to Calcular (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+inicializacion_gui
+ilohuapa_info_run(1,handles)
